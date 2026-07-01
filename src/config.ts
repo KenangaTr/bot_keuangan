@@ -33,7 +33,15 @@ export interface Config {
  * Melempar error jika variabel wajib tidak ditemukan.
  */
 const getEnv = (key: string, required = true): string => {
-  const value = process.env[key];
+  let value = process.env[key];
+  if (value) {
+    value = value.trim();
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.slice(1, -1);
+    } else if (value.startsWith("'") && value.endsWith("'")) {
+      value = value.slice(1, -1);
+    }
+  }
   if (required && !value) {
     throw new Error(`Environment variable ${key} wajib diisi tetapi tidak ditemukan!`);
   }
@@ -55,8 +63,8 @@ const cleanDriveFolderId = rawDriveFolderId ? rawDriveFolderId.split('?')[0].tri
 export const config: Config = {
   TELEGRAM_BOT_TOKEN: getEnv('TELEGRAM_BOT_TOKEN'),
   GOOGLE_SPREADSHEET_ID: mainSpreadsheetId,
-  GOOGLE_SPREADSHEET_ID_PEMASUKAN: process.env.GOOGLE_SPREADSHEET_ID_PEMASUKAN || mainSpreadsheetId,
-  GOOGLE_SPREADSHEET_ID_PENGELUARAN: process.env.GOOGLE_SPREADSHEET_ID_PENGELUARAN || mainSpreadsheetId,
+  GOOGLE_SPREADSHEET_ID_PEMASUKAN: getEnv('GOOGLE_SPREADSHEET_ID_PEMASUKAN', false) || mainSpreadsheetId,
+  GOOGLE_SPREADSHEET_ID_PENGELUARAN: getEnv('GOOGLE_SPREADSHEET_ID_PENGELUARAN', false) || mainSpreadsheetId,
   GOOGLE_DRIVE_FOLDER_ID: cleanDriveFolderId,
   GOOGLE_SERVICE_ACCOUNT_EMAIL: getEnv('GOOGLE_SERVICE_ACCOUNT_EMAIL'),
   GOOGLE_PRIVATE_KEY: formatPrivateKey(getEnv('GOOGLE_PRIVATE_KEY')),
