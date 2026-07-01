@@ -48,11 +48,12 @@ const getEnv = (key: string, required = true): string => {
   return value || '';
 };
 
-/**
- * Format private key Google Service Account agar karakter new line (\n) terbaca dengan benar.
- */
 const formatPrivateKey = (key: string): string => {
-  return key.replace(/\\n/g, '\n');
+  return key
+    .split('\\n').join('\n')
+    .split('\\r').join('\r')
+    .split('\r\n').join('\n')
+    .trim();
 };
 
 const mainSpreadsheetId = getEnv('GOOGLE_SPREADSHEET_ID');
@@ -65,11 +66,12 @@ const formattedPrivateKey = formatPrivateKey(rawPrivateKey);
 
 console.log('--- GOOGLE PRIVATE KEY DEBUG ---');
 console.log('Raw key length:', rawPrivateKey.length);
-console.log('Raw key starts with:', rawPrivateKey.substring(0, 30));
-console.log('Raw key ends with:', rawPrivateKey.substring(rawPrivateKey.length - 30));
 console.log('Formatted key length:', formattedPrivateKey.length);
+console.log('Raw contains backslash:', rawPrivateKey.includes('\\'));
+console.log('Raw contains actual newline:', rawPrivateKey.includes('\n'));
+console.log('Formatted contains actual newline:', formattedPrivateKey.includes('\n'));
+console.log('Raw key starts with:', rawPrivateKey.substring(0, 30));
 console.log('Formatted key starts with:', JSON.stringify(formattedPrivateKey.substring(0, 30)));
-console.log('Formatted key ends with:', JSON.stringify(formattedPrivateKey.substring(formattedPrivateKey.length - 30)));
 console.log('--------------------------------');
 
 export const config: Config = {
