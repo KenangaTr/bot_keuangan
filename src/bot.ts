@@ -4,6 +4,7 @@ import { config } from './config';
 import { antiSpam } from './middlewares/antispam';
 import { handleStart, handleHelp } from './handlers/start';
 import { MyContext, tambahPemasukan, tambahPengeluaran } from './handlers/conversation';
+import { GoogleSheetsStorage } from './services/sessionStorage';
 
 // Inisialisasi bot dengan tipe Context kustom MyContext
 export const bot = new Bot<MyContext>(config.TELEGRAM_BOT_TOKEN);
@@ -14,6 +15,7 @@ bot.use(antiSpam);
 // grammY Conversations memerlukan plugin session terpasang terlebih dahulu
 bot.use(session({
   initial: () => ({}),
+  storage: new GoogleSheetsStorage(),
 }));
 
 // Pasang plugin conversations

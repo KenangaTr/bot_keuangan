@@ -17,7 +17,7 @@ const docPemasukan = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID_PEMASUKA
 const docPengeluaran = new GoogleSpreadsheet(config.GOOGLE_SPREADSHEET_ID_PENGELUARAN, auth);
 
 // Instansiasi raw Google Sheets API client v4
-const sheetsApi = google.sheets({ version: 'v4', auth });
+export const sheetsApi = google.sheets({ version: 'v4', auth });
 
 let databaseInitialized = false;
 
