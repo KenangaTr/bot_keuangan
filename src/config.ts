@@ -49,11 +49,45 @@ const getEnv = (key: string, required = true): string => {
 };
 
 const formatPrivateKey = (key: string): string => {
-  return key
-    .split('\\n').join('\n')
-    .split('\\r').join('\r')
-    .split('\r\n').join('\n')
-    .trim();
+  let cleanKey = key.trim();
+  
+  // Bersihkan tanda kutip ganda/tunggal jika ada
+  if (cleanKey.startsWith('"') && cleanKey.endsWith('"')) {
+    cleanKey = cleanKey.slice(1, -1);
+  } else if (cleanKey.startsWith("'") && cleanKey.endsWith("'")) {
+    cleanKey = cleanKey.slice(1, -1);
+  }
+  
+  // Ganti literal \n jika ada
+  cleanKey = cleanKey.split('\\n').join('\n');
+  cleanKey = cleanKey.split('\\r').join('\r');
+  cleanKey = cleanKey.split('\r\n').join('\n');
+  
+  // Jika tidak mengandung karakter newline sama sekali, tandanya kunci privat tergabung menjadi satu baris
+  if (!cleanKey.includes('\n')) {
+    const header = '-----BEGIN PRIVATE KEY-----';
+    const footer = '-----END PRIVATE KEY-----';
+    
+    let base64Body = cleanKey;
+    if (base64Body.startsWith(header)) {
+      base64Body = base64Body.substring(header.length);
+    }
+    if (base64Body.endsWith(footer)) {
+      base64Body = base64Body.substring(0, base64Body.length - footer.length);
+    }
+    base64Body = base64Body.trim();
+    
+    // Potong base64 per 64 karakter (standar format PEM)
+    const chunks: string[] = [];
+    for (let i = 0; i < base64Body.length; i += 64) {
+      chunks.push(base64Body.substring(i, i + 64));
+    }
+    
+    // Satukan kembali dengan newline asli
+    cleanKey = `${header}\n${chunks.join('\n')}\n${footer}\n`;
+  }
+  
+  return cleanKey;
 };
 
 const mainSpreadsheetId = getEnv('GOOGLE_SPREADSHEET_ID');
