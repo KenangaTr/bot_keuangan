@@ -1,6 +1,6 @@
 import { google } from 'googleapis';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { config } from '../config';
+import { config, logPrivateKeyDebug } from '../config';
 
 // Inisialisasi autentikasi Google API JWT
 const auth = new google.auth.JWT({
@@ -73,6 +73,7 @@ async function getMonthlySheetTitle(doc: GoogleSpreadsheet, prefix = 'BULAN'): P
 export async function getCustomerDetails(
   customerId: string
 ): Promise<{ nama: string; paket: string; harga: number } | null> {
+  logPrivateKeyDebug();
   await initializeDatabase();
 
   let sheet = docDatabase.sheetsByIndex.find((s) => {

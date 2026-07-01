@@ -64,15 +64,17 @@ const cleanDriveFolderId = rawDriveFolderId ? rawDriveFolderId.split('?')[0].tri
 const rawPrivateKey = getEnv('GOOGLE_PRIVATE_KEY');
 const formattedPrivateKey = formatPrivateKey(rawPrivateKey);
 
-console.log('--- GOOGLE PRIVATE KEY DEBUG ---');
-console.log('Raw key length:', rawPrivateKey.length);
-console.log('Formatted key length:', formattedPrivateKey.length);
-console.log('Raw contains backslash:', rawPrivateKey.includes('\\'));
-console.log('Raw contains actual newline:', rawPrivateKey.includes('\n'));
-console.log('Formatted contains actual newline:', formattedPrivateKey.includes('\n'));
-console.log('Raw key starts with:', rawPrivateKey.substring(0, 30));
-console.log('Formatted key starts with:', JSON.stringify(formattedPrivateKey.substring(0, 30)));
-console.log('--------------------------------');
+export const logPrivateKeyDebug = () => {
+  console.log('--- GOOGLE PRIVATE KEY DEBUG ---');
+  console.log('Raw key length:', rawPrivateKey.length);
+  console.log('Formatted key length:', formattedPrivateKey.length);
+  console.log('Raw contains backslash:', rawPrivateKey.includes('\\'));
+  console.log('Raw contains actual newline:', rawPrivateKey.includes('\n'));
+  console.log('Formatted contains actual newline:', formattedPrivateKey.includes('\n'));
+  console.log('Raw key starts with:', rawPrivateKey.substring(0, 30));
+  console.log('Formatted key starts with:', JSON.stringify(formattedPrivateKey.substring(0, 30)));
+  console.log('--------------------------------');
+};
 
 export const config: Config = {
   TELEGRAM_BOT_TOKEN: getEnv('TELEGRAM_BOT_TOKEN'),
