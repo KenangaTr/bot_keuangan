@@ -60,6 +60,18 @@ const mainSpreadsheetId = getEnv('GOOGLE_SPREADSHEET_ID');
 const rawDriveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 const cleanDriveFolderId = rawDriveFolderId ? rawDriveFolderId.split('?')[0].trim() : undefined;
 
+const rawPrivateKey = getEnv('GOOGLE_PRIVATE_KEY');
+const formattedPrivateKey = formatPrivateKey(rawPrivateKey);
+
+console.log('--- GOOGLE PRIVATE KEY DEBUG ---');
+console.log('Raw key length:', rawPrivateKey.length);
+console.log('Raw key starts with:', rawPrivateKey.substring(0, 30));
+console.log('Raw key ends with:', rawPrivateKey.substring(rawPrivateKey.length - 30));
+console.log('Formatted key length:', formattedPrivateKey.length);
+console.log('Formatted key starts with:', JSON.stringify(formattedPrivateKey.substring(0, 30)));
+console.log('Formatted key ends with:', JSON.stringify(formattedPrivateKey.substring(formattedPrivateKey.length - 30)));
+console.log('--------------------------------');
+
 export const config: Config = {
   TELEGRAM_BOT_TOKEN: getEnv('TELEGRAM_BOT_TOKEN'),
   GOOGLE_SPREADSHEET_ID: mainSpreadsheetId,
@@ -67,6 +79,6 @@ export const config: Config = {
   GOOGLE_SPREADSHEET_ID_PENGELUARAN: getEnv('GOOGLE_SPREADSHEET_ID_PENGELUARAN', false) || mainSpreadsheetId,
   GOOGLE_DRIVE_FOLDER_ID: cleanDriveFolderId,
   GOOGLE_SERVICE_ACCOUNT_EMAIL: getEnv('GOOGLE_SERVICE_ACCOUNT_EMAIL'),
-  GOOGLE_PRIVATE_KEY: formatPrivateKey(getEnv('GOOGLE_PRIVATE_KEY')),
+  GOOGLE_PRIVATE_KEY: formattedPrivateKey,
   IMGBB_API_KEY: getEnv('IMGBB_API_KEY'),
 };
