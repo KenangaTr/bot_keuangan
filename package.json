@@ -1,0 +1,33 @@
+{
+  "name": "telegram-finance-bot",
+  "version": "1.0.0",
+  "description": "Telegram Bot for Income & Expense Logging with Google Sheets & Drive",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "dev": "nodemon --watch src -e ts --exec ts-node src/index.ts"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "grammy",
+    "google-sheets",
+    "google-drive"
+  ],
+  "author": "Senior Full-Stack Engineer",
+  "license": "ISC",
+  "dependencies": {
+    "@grammyjs/conversations": "^2.1.1",
+    "dotenv": "^16.4.5",
+    "google-spreadsheet": "^4.1.4",
+    "googleapis": "^140.0.0",
+    "grammy": "^1.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}
